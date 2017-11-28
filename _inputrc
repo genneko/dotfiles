@@ -1,0 +1,2 @@
+# vim: ft=sh ff=unix
+set mark-symlinked-directories on

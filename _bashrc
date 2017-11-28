@@ -1,0 +1,32 @@
+# vim: ft=sh ff=unix
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i'
+alias ls='ls -F'
+alias less='lv'
+alias gcat="gpg -o - -d"
+
+export LANG=en_US.UTF-8
+export LC_CTYPE=ja_JP.UTF-8
+export LV=-c
+export EDITOR=vim
+export PAGER=lv
+export BLOCKSIZE=K
+export PATH="$PATH:$HOME/bin"
+
+PS1='[\u@\h:\w]\$ '
+set -o noclobber
+set -o ignoreeof
+
+DOTFILES=$(basename $(dirname $(readlink -f $HOME/.bashrc)))
+DOTLOCAL="${DOTFILES}.local"
+export DOTFILES DOTLOCAL
+
+if [ -f "$HOME/$DOTFILES/lib/bash/subr.common" ]; then
+	. "$HOME/$DOTFILES/lib/bash/subr.common"
+	dot_os_loadcfg bashrc
+fi
+
+if [ -f "$HOME/$DOTLOCAL/bashrc" ]; then
+	. "$HOME/$DOTLOCAL/bashrc"
+fi

@@ -1,0 +1,56 @@
+# vim: ft=sh
+
+dot_loadcfg(){
+	local filetype=$1
+	local extension=$2
+	dot_loadpath "$HOME/$DOTFILES/lib/bash/$filetype.$extension"
+}
+
+dot_loadfile(){
+	local filename=$1
+	dot_loadpath "$HOME/$DOTFILES/lib/bash/$filename"
+}
+
+dot_loadpath(){
+	local filepath=$1
+	if [ -f "$filepath" ]; then
+		. "$filepath"
+	fi
+}
+
+dot_os_loadcfg(){
+	local filetype=$1
+	case "$OSTYPE" in
+		freebsd*)
+			dot_loadcfg "$filetype" "freebsd"
+			;;
+		cygwin*)
+			dot_loadcfg "$filetype" "cygwin"
+			;;
+		*)
+			;;
+	esac
+}
+
+dot_setproxy(){
+	local proxyhost=$1
+	local noproxyhost=$2
+	if [ -n "$proxyhost" ]; then
+		http_proxy="$proxyhost"
+		https_proxy="$proxyhost"
+		ftp_proxy="$proxyhost"
+		no_proxy="localhost,127.0.0.1"
+		if [ -n "$noproxyhost" ]; then
+			no_proxy="$noproxyhost,$no_proxy"
+		fi
+		export http_proxy https_proxy ftp_proxy no_proxy
+	fi
+}
+
+dot_getproxy(){
+	printenv | grep _proxy
+}
+
+dot_getproxy_export(){
+	printenv | grep _proxy | xargs -I "CONTENT" echo "export CONTENT"
+}

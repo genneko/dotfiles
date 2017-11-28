@@ -1,0 +1,10 @@
+# Cygwin-specific
+dot_cygprompt(){
+	id -G | grep -q '\b544\b' && echo '#' || echo '$'
+}
+export CYGWIN="ntsec emacs nodosfilewarning"
+export VAGRANT_PREFER_SYSTEM_BIN=1
+export SHELL=/usr/bin/bash
+shopt -s completion_strip_exe
+PS1='[\u@\h:\w]'$(dot_cygprompt)' '
+alias cs=cygstart

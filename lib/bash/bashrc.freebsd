@@ -1,0 +1,4 @@
+# FreeBSD-specific
+alias ls='ls -wF'
+alias pup='sudo portsnap fetch update; pkg version -vL='
+alias bp='sudo portmaster -D'

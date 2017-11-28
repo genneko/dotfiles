@@ -1,0 +1,4 @@
+# vim: ft=sh ff=unix
+if [ -f "$HOME/$DOTLOCAL/bash_logout" ]; then
+	. "$HOME/$DOTLOCAL/bash_logout"
+fi

@@ -1,0 +1,5 @@
+# vim: ft=sh ff=unix
+
+if [ -z "$TMUX" ]; then
+	eval `ssh-agent -k`
+fi

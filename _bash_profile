@@ -1,0 +1,29 @@
+# vim: ft=sh ff=unix
+if [ -f "${HOME}/.bashrc" ] ; then
+	source "${HOME}/.bashrc"
+fi
+
+if which az.completion.sh > /dev/null 2>&1; then
+	source $(which az.completion.sh)
+fi
+
+if which aws_completer > /dev/null 2>&1; then
+	complete -C aws_completer aws
+fi
+
+if which doctl > /dev/null 2>&1; then
+	source <($HOME/bin/doctl completion bash)
+fi
+
+if which tmux > /dev/null 2>&1; then
+	if [ -z "$TMUX" ]; then
+		echo "----------------------------------------------------"
+		tmux ls
+		echo "----------------------------------------------------"
+		echo
+	fi
+fi
+
+if [ -f "$HOME/$DOTLOCAL/bash_profile" ]; then
+	. "$HOME/$DOTLOCAL/bash_profile"
+fi
