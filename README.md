@@ -26,13 +26,13 @@ If the change is generic enough and can be applied to all your systems, make it 
 ### Local change
 If the change is local to a specific system or limited range of systems, take the following steps to create an override configuration.
 
-First, create ~/dotfiles.local directory.
+First, create ~/local/dotfiles directory.
 ```
-$ mkdir ~/dotfiles.local
+$ mkdir -p ~/local/dotfiles
 ```
 
 Then, create an override configuration file in the directory.
 Name the file by removing a leading dot. For example, "bashrc" for ".bashrc".
 ```
-$ vim ~/dotfiles.local/bashrc
+$ vim ~/local/dotfiles/bashrc
 ```

@@ -19,7 +19,7 @@ set -o noclobber
 set -o ignoreeof
 
 DOTFILES=$(basename $(dirname $(readlink -f $HOME/.bashrc)))
-DOTLOCAL="${DOTFILES}.local"
+DOTLOCAL="local/${DOTFILES}"
 export DOTFILES DOTLOCAL
 
 if [ -f "$HOME/$DOTFILES/lib/bash/subr.common" ]; then
