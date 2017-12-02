@@ -21,6 +21,7 @@ set -o ignoreeof
 DOTFILES=$(basename $(dirname $(readlink -f $HOME/.bashrc)))
 DOTLOCAL="local/${DOTFILES}"
 export DOTFILES DOTLOCAL
+PATH="$PATH:$HOME/$DOTFILES/common/bin"
 
 if [ -f "$HOME/$DOTFILES/lib/bash/subr.common" ]; then
 	. "$HOME/$DOTFILES/lib/bash/subr.common"
