@@ -32,6 +32,22 @@ dot_os_loadcfg(){
 	esac
 }
 
+dot_os_addpath(){
+	local path=$1
+	if [ -n "$path" ]; then
+		case "$OSTYPE" in
+			freebsd*)
+				PATH="$PATH:$HOME/$DOTFILES/$path/freebsd"
+				;;
+			cygwin*)
+				PATH="$PATH:$HOME/$DOTFILES/$path/cygwin"
+				;;
+			*)
+				;;
+		esac
+	fi
+}
+
 dot_setproxy(){
 	local proxyhost=$1
 	local noproxyhost=$2

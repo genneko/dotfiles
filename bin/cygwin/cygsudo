@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ $# = 0 ]; then
+	cygstart --action=runas mintty
+else
+	cygstart --action=runas mintty -e $@
+fi

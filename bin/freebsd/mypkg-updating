@@ -1,0 +1,26 @@
+#!/bin/sh
+
+updatingfile="$HOME/tmp/UPDATING"
+updateupdating=0
+while getopts "u" opt
+do
+	case "${opt}" in
+		u) updateupdating=1 ;;
+	esac
+done
+shift $(( $OPTIND - 1 ))
+
+if [ $updateupdating -eq 1 ]; then
+	echo -n "Updating UPDATING file ..."
+	wget -q --no-check-certificate -O "$updatingfile" 'https://svnweb.freebsd.org/ports/head/UPDATING?view=co'
+	echo " done"
+fi
+
+if [ -f "$updatingfile" ]; then
+	echo "Using $updatingfile ..."
+	pkg updating -f "$updatingfile" "$@"
+else
+	echo "Using /usr/ports/UPDATING ... (cannot find $updatingfile)"
+	pkg updating "$@"
+fi
+
