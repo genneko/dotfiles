@@ -1,0 +1,88 @@
+#!/usr/bin/env perl
+#
+# portcfg --- a wrapper for FreeBSD ports "make showconfig".
+#             This script adds information which option has non-default value.
+#
+use strict;
+use Cwd;
+
+my $PORTS_DIR = "/usr/ports";
+
+my($port) = @ARGV;
+if(!$port){
+    printf STDERR ("Please specify a portname with category (eg. net/mediatomb).\n");
+    exit(1);
+}
+
+if(-d "$PORTS_DIR/$port"){
+    chdir("$PORTS_DIR/$port") || die "Cannot chdir to the $PORTS_DIR/$port.\n";
+}else{
+    my $portdir = `whereis -qs $port`;
+    chomp($portdir);
+    if(-d $portdir){
+        chdir($portdir) || die "Cannot chdir to the $portdir.\n";
+    }else{
+        printf STDERR ("Cannot find the specified port '%s'.\n", $port);
+        exit(1);
+    }
+}
+
+print "port: " . cwd() . "\n";
+
+my @defaults = get_defaults("Makefile");
+my %defaultsmap = map { $_ => 1 } @defaults;
+open(CMD, "-|", "make showconfig") || die "Cannot run 'make showconfig' on the port '$port'.\n";
+while(<CMD>){
+    if(/^\s+(\w+)=(on|off):/){
+        if( ($2 eq "on") && !$defaultsmap{$1} ){
+            s/^../*>/;
+        }elsif( ($2 eq "off") && $defaultsmap{$1} ){
+            s/^../*</;
+        }
+    }
+    print;
+}
+close(CMD);
+exit(0);
+
+sub get_defaults{
+    my($makefile) = @_;
+    open(MAKEFILE, $makefile) || return undef;
+    print "Makefile: $makefile\n";
+    my $line;
+    my @default;
+    while( defined($line = read_multiline("MAKEFILE")) ){
+        if($line =~ /^MASTERDIR=\s*(\S+)\s*$/){
+            my $subdir = $1;
+            $subdir =~ s|\$\{\.CURDIR\}/||;
+            push(@default, get_defaults("$subdir/Makefile"));
+        }
+        if($line =~ /^\s*OPTIONS_DEFAULT=/){
+            $line =~ s/^\s*OPTIONS_DEFAULT=\s*//;
+            @default = split(/\s+/, $line);
+            last;
+        }
+    }
+    close(MAKEFILE);
+    return @default;
+}
+
+sub read_multiline{
+    my($fh) = @_;
+    my $line = "";
+    while(<$fh>){
+        chomp;
+        if($line){
+            $line .= " " . $_;
+        }else{
+            $line = $_;
+        }
+        if(/\\$/){
+            $line =~ s/\\$//;
+            next;
+        }
+        return $line;
+        $line = "";
+    }
+    return undef;
+}
