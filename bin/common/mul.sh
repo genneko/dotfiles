@@ -18,9 +18,9 @@ usage_exit() {
 	echo "       -t: use telnet instead of ssh."
 	echo "       -i: use ipmitool instead of ssh."
 	echo "       -s: use ssh (default)."
-	echo "       -V: vertical instead of horizontal layout."
-	echo "       -T: tiled instead of horizontal layout."
-	echo "       -H: horizontal layout (default)."
+	echo "       -V: vertical layout (default)."
+	echo "       -T: tiled instead of vertical layout."
+	echo "       -H: horizontal instead of vertical layout."
 	echo "       -o: options to ssh/telnet in quotes."
 	echo "       -h: show this help and exit."
 	echo "       -v: show version and exit."
@@ -49,7 +49,7 @@ exit_if_na() {
 }
 
 rsh="ssh"
-layout="horizontal"
+layout="vertical"
 while getopts "tisVTHo:hv" opt
 do
 	case "${opt}" in
