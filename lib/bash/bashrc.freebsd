@@ -3,3 +3,9 @@ alias ls='ls -wF'
 alias pup='sudo portsnap fetch update; pkg version -vL='
 alias bp='sudo portmaster -D'
 alias pfls='sudo vp | vp_summary.pl'
+
+if kldstat -m zfs > /dev/null 2>&1; then
+	list_custom_snapshots() {
+		zfs list -t snapshot -o name,used,refer -r $(zfs list -t filesystem -o name,mounted,canmount -r zroot/ROOT | awk '$2=="yes" && $3=="noauto" { print $1 }') | egrep -v "ZB|auto|:"
+	}
+fi
