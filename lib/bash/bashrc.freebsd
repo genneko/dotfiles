@@ -1,11 +1,35 @@
 # FreeBSD-specific
+# vim: ft=sh
 alias ls='ls -wF'
 alias pup='sudo portsnap fetch update; pkg version -vL='
 alias bp='sudo portmaster -D'
 alias pfls='sudo vp | vp_summary.pl'
 
 if kldstat -m zfs > /dev/null 2>&1; then
-	list_custom_snapshots() {
-		zfs list -t snapshot -o name,used,refer -r $(zfs list -t filesystem -o name,mounted,canmount -r zroot/ROOT | awk '$2=="yes" && $3=="noauto" { print $1 }') | egrep -v "ZB|auto|:"
+	be_dataset() {
+		zfs list -t filesystem -o name,mounted,canmount -r zroot/ROOT | awk '$2=="yes" && $3=="noauto" { print $1 }'
+	}
+
+	be_list_snapshot() {
+		zfs list -t snapshot -H -o name,clones -r $(be_dataset) | egrep -v "ZB|auto" | sed -r 's/	zroot\/ROOT\/(.*)/ (\1)/'
+	}
+
+	_be_get_snapshot() {
+		if [ -n "$1" ]; then
+			zfs list -t snapshot -H -o name -r $(be_dataset) | egrep "@$1\$"
+		fi
+	}
+	be_take_snapshot() {
+		if [ -n "$1" ]; then
+			if [ -n "$(_be_get_snapshot $1)" ]; then
+				echo "The specified snapshot '$1' already exists for $(be_dataset)." >&2
+			else
+				sudo zfs snapshot -r $(be_dataset)@$1
+			fi
+		else
+			echo "usage: be_take_snapshot <name>" >&2
+			echo "       This will create a snapshot <name> of the current BE dataset." >&2
+			echo "       The current BE dataset is '$(be_dataset)'." >&2
+		fi
 	}
 fi
