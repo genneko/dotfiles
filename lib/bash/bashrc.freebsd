@@ -32,4 +32,20 @@ if kldstat -m zfs > /dev/null 2>&1; then
 			echo "       The current BE dataset is '$(be_dataset)'." >&2
 		fi
 	}
+
+	zfs_list_snapshot() {
+		if [ -n "$1" ]; then
+			zfs list -t snapshot -H -o name -r $1
+		else
+			zfs list -t snapshot -H -o name
+		fi
+	}
+
+	zfs_list_filesystem() {
+		if [ -n "$1" ]; then
+			zfs list -t filesystem -o name,com.sun:auto-snapshot,recordsize,compression -r $1
+		else
+			zfs list -t filesystem -o name,com.sun:auto-snapshot,recordsize,compression
+		fi
+	}
 fi
