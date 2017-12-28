@@ -7,6 +7,7 @@ alias less='lv'
 alias xless='/usr/bin/less -X'
 alias gcat='gpg -o - -d'
 alias nossh='ssh -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null"'
+alias noscp='scp -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null"'
 alias sort_by_ip='sort -n -t . -k 1,1 -k 2,2 -k 3,3 -k 4,4'
 
 export LANG=en_US.UTF-8
