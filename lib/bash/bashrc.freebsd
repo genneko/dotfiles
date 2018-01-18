@@ -42,10 +42,49 @@ if kldstat -m zfs > /dev/null 2>&1; then
 	}
 
 	zfs_list_filesystem() {
+		local OPTIND
+		local col1="name,recordsize,compression"
+		local col2="com.sun:auto-snapshot"
+		local types="filesystem"
+		local morecolumns=""
+		local fullcolumns=""
+		while getopts "dt:o:O:" opt
+		do
+			case "$opt" in
+				d)
+					fullcolumns="name,used,available,referenced,mountpoint"
+					;;
+				t)
+					if [ -n "$OPTARG" ]; then
+						types="$OPTARG"
+					fi
+					;;
+				o)
+					if [ -n "$OPTARG" ]; then
+						morecolumns="$OPTARG"
+					fi
+					;;
+				O)
+					if [ -n "$OPTARG" ]; then
+						fullcolumns="$OPTARG"
+					fi
+					;;
+			esac
+		done
+		shift $(( $OPTIND - 1 ))
+
+		if [ -z "$fullcolumns" ]; then
+			if [ -n "$morecolumns" ]; then
+				fullcolumns="${col1},${morecolumns},${col2}"
+			else
+				fullcolumns="${col1},${col2}"
+			fi
+		fi
+
 		if [ -n "$1" ]; then
-			zfs list -t filesystem -o name,recordsize,compression,com.sun:auto-snapshot -r $1 | sed 's/COM\.SUN:AUTO-SNAPSHOT/AUTOSNAP/'
+			zfs list -t $types -o $fullcolumns -r $1 | sed 's/COM\.SUN:AUTO-SNAPSHOT/AUTOSNAP/'
 		else
-			zfs list -t filesystem -o name,recordsize,compression,com.sun:auto-snapshot | sed 's/COM\.SUN:AUTO-SNAPSHOT/AUTOSNAP/'
+			zfs list -t $types -o $fullcolumns | sed 's/COM\.SUN:AUTO-SNAPSHOT/AUTOSNAP/'
 		fi
 	}
 fi
