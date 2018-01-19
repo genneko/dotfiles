@@ -36,9 +36,9 @@ $srcflag = '%-23.23s';
 $type = $ARGV[0] ? $ARGV[0] : "block";
 
 if($type =~ /^(all|any)$/i){
-    $pattern="pass|block";
+    $pattern="pass|rdr|block";
 }elsif($type =~ /^(pass|allow)$/i){
-    $pattern="pass";
+    $pattern="pass|rdr";
 }elsif($type =~ /^(block|deny)$/i){
     $pattern="block";
 }else{
