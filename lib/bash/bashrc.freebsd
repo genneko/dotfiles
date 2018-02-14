@@ -43,16 +43,19 @@ if kldstat -m zfs > /dev/null 2>&1; then
 
 	zfs_list_filesystem() {
 		local OPTIND
-		local col1="name,recordsize,compression"
-		local col2="com.sun:auto-snapshot"
+		local col1="name"
+		local col2="recordsize,compression,com.sun:auto-snapshot"
 		local types="filesystem"
 		local morecolumns=""
 		local fullcolumns=""
-		while getopts "dt:o:O:" opt
+		while getopts "dlt:o:O:" opt
 		do
 			case "$opt" in
 				d)
 					fullcolumns="name,used,available,referenced,mountpoint"
+					;;
+				l)
+					morecolumns="used,referenced"
 					;;
 				t)
 					if [ -n "$OPTARG" ]; then
