@@ -48,26 +48,46 @@ if kldstat -m zfs > /dev/null 2>&1; then
 		local types="filesystem"
 		local morecolumns=""
 		local fullcolumns=""
-		while getopts "dlt:o:O:" opt
+		while getopts "dlmcpt:o:O:" opt
 		do
 			case "$opt" in
 				d)
-					fullcolumns="name,used,available,referenced,mountpoint"
+					# d - default (zfs list's)
+					morecolumns="$morecolumns${morecolumns:+,}used,available,referenced,mountpoint"
+					col2=""
 					;;
 				l)
-					morecolumns="used,referenced"
+					# l - long
+					morecolumns="$morecolumns${morecolumns:+,}used,referenced"
+					;;
+				m)
+					# m - mounts
+					morecolumns="$morecolumns${morecolumns:+,}mountpoint,canmount,mounted"
+					col2=""
+					;;
+				c)
+					# c - clones
+					morecolumns="$morecolumns${morecolumns:+,}origin"
+					col2=""
+					;;
+				p)
+					# p - properties
+					morecolumns="$morecolumns${morecolumns:+,}atime,canmount"
 					;;
 				t)
+					# t - types to show
 					if [ -n "$OPTARG" ]; then
 						types="$OPTARG"
 					fi
 					;;
 				o)
+					# o - optional (additional) columns
 					if [ -n "$OPTARG" ]; then
-						morecolumns="$OPTARG"
+						morecolumns="$morecolumns${morecolumns:+,}$OPTARG"
 					fi
 					;;
 				O)
+					# O - alternate columns
 					if [ -n "$OPTARG" ]; then
 						fullcolumns="$OPTARG"
 					fi
