@@ -48,7 +48,7 @@ if kldstat -m zfs > /dev/null 2>&1; then
 		local types="filesystem"
 		local morecolumns=""
 		local fullcolumns=""
-		while getopts "dlmcpt:o:O:" opt
+		while getopts "dlmcpt:o:O:h" opt
 		do
 			case "$opt" in
 				d)
@@ -91,6 +91,24 @@ if kldstat -m zfs > /dev/null 2>&1; then
 					if [ -n "$OPTARG" ]; then
 						fullcolumns="$OPTARG"
 					fi
+					;;
+				h|*)
+					# h - help
+					echo "usage: zfs_list_filesystem [-dlmcp] [-t types] [-{o|O} cols] [dataset]"
+					echo "       zfs_list_filesystem -h"
+					echo
+					echo "       -d: default of 'zfs list'"
+					echo "       -l: long (show default + used,referenced)"
+					echo "       -m: mount (show name,mountpoint,canmount,mounted)"
+					echo "       -c: clone (show name,origin)"
+					echo "       -p: properties (show default + name,atime,canmount)"
+					echo "       -t: types (types for 'zfs list -t'"
+					echo "       -o cols: additional columns to the default."
+					echo "       -O cols: alternate columns to the default."
+					echo
+					echo "       Default columns: name,recordsize,compresion,autosnap"
+					echo
+					return 0
 					;;
 			esac
 		done
