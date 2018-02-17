@@ -47,11 +47,11 @@ $ gitaccount clear
 ```
 
 * Some tips
- - If you want git to reject commit when no account info is set, add the following config.
+    - If you want git to reject commit when no account info is set, add the following config.
     ```
     $ git config --global user.useconfigonly true
-
- - To enforce you to run 'gitaccount use' for each repository, remove global user configuration from git.
+    ```
+    - To enforce you to run 'gitaccount use' for each repository, remove global user configuration from git.
     ```
     $ git config --global --unset user.name
     $ git config --global --unset user.email
