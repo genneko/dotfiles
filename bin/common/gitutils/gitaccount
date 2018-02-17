@@ -76,8 +76,12 @@ show_status_multi() {
 	for d in "$@"; do
 		(
 			echo "*** $d ***"
-			cd $d
-			show_status
+			if [ -d "$d" ]; then
+				cd $d
+				show_status
+			else
+				echo "Not a directory."
+			fi
 			echo
 		)
 	done
