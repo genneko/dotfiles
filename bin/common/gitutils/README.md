@@ -12,7 +12,7 @@ $ gitaccount add private "Your Name" "your_name@private.example.com"
 ```
 
 ### privacychk
-Create a file ~/.privacychkrc with a one-line extended regular expression (ERE). The tool simply uses the regex line to do 'grep -ERi' for the current directory.
+Create a file ~/.privacychkrc with a one-line extended regular expression (ERE). The tool simply uses the regex line to do 'grep -ERi' on the current directory and 'git log --pretty=full' output.
 ```
 $ vim ~/.privacychkrc
 badword|privatename1|privatename2|xx\.xx\.xy\.xz
@@ -45,6 +45,17 @@ $ gitaccount
 ```
 $ gitaccount clear
 ```
+
+* Some tips
+ - If you want git to reject commit when no account info is set, add the following config.
+    ```
+    $ git config --global user.useconfigonly true
+
+ - To enforce you to run 'gitaccount use' for each repository, remove global user configuration from git.
+    ```
+    $ git config --global --unset user.name
+    $ git config --global --unset user.email
+    ````
 
 ### privacychk
 Go to a directory and just run the command.
