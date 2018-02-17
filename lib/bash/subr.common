@@ -48,6 +48,15 @@ dot_os_addpath(){
 	fi
 }
 
+dot_addpath_recursively(){
+	local basedir=$1
+	if [ -n "$basedir" -a -d "$basedir" ]; then
+		for d in $(find $(readlink -f "$basedir") -type d); do
+			PATH="$PATH:$d"
+		done
+	fi
+}
+
 dot_setproxy(){
 	local proxyhost=$1
 	local noproxyhost=$2

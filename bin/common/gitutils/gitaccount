@@ -1,0 +1,146 @@
+#!/bin/sh
+#
+# gitaccount
+#   list and change git account configurations.
+#
+
+progname=`basename $0`
+bindir=`dirname $0`
+
+error_exit() {
+	local msg=$1
+	if [ -n "$msg" ]; then
+		echo "ERROR: $msg"
+	fi
+	exit 1
+}
+
+usage_exit() {
+	local msg=$1
+	if [ -n "$msg" ]; then
+		echo "$msg"
+	fi
+	echo "uasge: $progname use <account>"
+	echo "       $progname clear"
+	echo "       $progname [status]"
+	echo "       $progname list"
+	echo "       $progname show <account>"
+	echo "       $progname add <account> <name> <email>"
+	echo "       $progname help"
+	echo
+	exit 1
+}
+
+set_account() {
+	local file=$1
+	local name=$(grep ^user\.name= $file | tail -n 1 | sed -r 's/^user\.name=//')
+	local email=$(grep ^user\.email= $file | tail -n 1 | sed -r 's/^user\.email=//')
+	if [ -n "$name" -a -n "$email" ]; then
+		git config user.name "$name" && git config user.email "$email"
+	else
+		false
+	fi
+}
+
+show_account() {
+	local file=$1
+	cat $file
+}
+
+add_account() {
+	local name=$1
+	local email=$2
+	local file=$3
+	echo -n "" > $file
+	echo "user.name=$name" >> $file
+	echo "user.email=$email" >> $file
+}
+
+show_status() {
+	local cfg=$(git config --list --local 2>/dev/null | grep -E '^user\.(name|email)')
+	if [ -z "$cfg" ]; then
+		cfg=$(git config --list --global 2>/dev/null | grep -E '^user\.(name|email)')
+		if [ -z "$cfg" ]; then
+			echo "NO config at all."
+		else
+			echo "[GLOBAL] (No LOCAL config)."
+			echo "$cfg"
+		fi
+	else
+		echo "[LOCAL]"
+		echo "$cfg"
+	fi
+}
+
+type=${1:-status}
+account=$2
+name=$3
+email=$4
+
+case "$type" in
+	add)
+		if [ -z "$account" ];then
+			usage_exit
+		fi
+		file="$HOME/.gitaccount-$account"
+		if [ -r "$file" ]; then
+			error_exit "account [$account] already exists."
+		else
+			if [ -n "$name" -a -n "$email" ]; then
+				if add_account "$name" "$email" $file; then
+					show_account "$file"
+					echo "Run '$progname use $account' to activate this account."
+				else
+					error_exit "account [$account] could not be added."
+				fi
+			else
+				usage_exit "Please specify both name and email."
+			fi
+		fi
+		;;
+	use)
+		if [ -z "$account" ];then
+			usage_exit
+		fi
+		file="$HOME/.gitaccount-$account"
+		if [ -r "$file" ]; then
+			if set_account "$file" 2>/dev/null; then
+				show_status
+			else
+				error_exit "account [$account] could not be set for use."
+			fi
+		else
+			error_exit "account [$account] does not exist."
+		fi
+		;;
+	clear)
+		git config --unset user.name
+		git config --unset user.email
+		echo "LOCAL config has been cleared."
+		show_status
+		;;
+	status)
+		show_status
+		;;
+	list)
+		(cd $HOME; ls .gitaccount-* | sed 's/.gitaccount-//') 2>/dev/null
+		;;
+	show)
+		if [ -z "$account" ]; then
+			usage_exit
+		fi
+		file="$HOME/.gitaccount-$account"
+		if [ -r "$file" ]; then
+			echo "[$account]"
+			show_account "$file"
+		else
+			error_exit "account [$account] does not exist."
+		fi
+		;;
+	help|*)
+		usage_exit
+		;;
+esac
+
+exit 0
+

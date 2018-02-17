@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# privacychk
+#  check if your private information is not contained.
+#
+config="$HOME/.privacychkrc"
+if [ -f "$config" ]; then
+	pattern=$(cat $config)
+	grep -iER "$pattern" . | grep -v ^\./\.git/
+	git log --pretty=full | grep -iE "$pattern"
+else
+	echo "WARNING: configuration file '$config' does not exist."
+	exit 1
+fi
