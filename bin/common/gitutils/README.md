@@ -23,7 +23,7 @@ badword|privatename1|privatename2|xx\.xx\.xy\.xz
 ```
 gitaccount use <account> : configure git to locally use <account> in the current repository.
 gitaccount clear         : clear local account settings for the current repository.
-gitaccount [status]      : show account being used for the current repository.
+gitaccount [status [<directory>...]]: show account being used for the current repository.
 gitaccount list          : list available account names.
 gitaccount show <account>: show the specified account details.
 gitaccount add <account> <name> <email>: add an account for the app.

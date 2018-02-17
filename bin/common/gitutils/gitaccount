@@ -22,7 +22,7 @@ usage_exit() {
 	fi
 	echo "uasge: $progname use <account>"
 	echo "       $progname clear"
-	echo "       $progname [status]"
+	echo "       $progname [status [<directory>...]]"
 	echo "       $progname list"
 	echo "       $progname show <account>"
 	echo "       $progname add <account> <name> <email>"
@@ -70,6 +70,17 @@ show_status() {
 		echo "[LOCAL]"
 		echo "$cfg"
 	fi
+}
+
+show_status_multi() {
+	for d in "$@"; do
+		(
+			echo "*** $d ***"
+			cd $d
+			show_status
+			echo
+		)
+	done
 }
 
 type=${1:-status}
@@ -120,7 +131,12 @@ case "$type" in
 		show_status
 		;;
 	status)
-		show_status
+		shift
+		if [ $# -ge 1 ]; then
+			show_status_multi "$@"
+		else
+			show_status
+		fi
 		;;
 	list)
 		(cd $HOME; ls .gitaccount-* | sed 's/.gitaccount-//') 2>/dev/null
