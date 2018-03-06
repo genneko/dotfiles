@@ -12,6 +12,7 @@ my @CLASS_DIGIT = ("0" .. "9");
 my @CLASS_SYMBOL = qw(! # % & + , . / : ; < = > ? @ ^ ~);
 my @CLASS_SYMBOL_MIN = qw(- _);
 
+sub classes2chars;
 sub uniq;
 sub checkclasses;
 
@@ -27,15 +28,15 @@ if( $length < $MINIMUM_LENGTH ){
     exit(1);
 }
 
-my @chars = (@CLASS_UPPER, @CLASS_LOWER, @CLASS_DIGIT, @CLASS_SYMBOL);
-my @classes = (\@CLASS_UPPER, \@CLASS_LOWER, \@CLASS_DIGIT, \@CLASS_SYMBOL);
+my @classes;
 if($opt_t =~ /^alnum/i){
-    @chars = (@CLASS_UPPER, @CLASS_LOWER, @CLASS_DIGIT);
     @classes = (\@CLASS_UPPER, \@CLASS_LOWER, \@CLASS_DIGIT);
 }elsif($opt_t =~ /^word/i){
-    @chars = (@CLASS_UPPER, @CLASS_LOWER, @CLASS_DIGIT, @CLASS_SYMBOL_MIN);
     @classes = (\@CLASS_UPPER, \@CLASS_LOWER, \@CLASS_DIGIT, \@CLASS_SYMBOL_MIN);
+}else{
+    @classes = (\@CLASS_UPPER, \@CLASS_LOWER, \@CLASS_DIGIT, \@CLASS_SYMBOL);
 }
+my @chars = classes2chars(@classes);
 
 my @addchars = ();
 if($opt_c){
@@ -68,6 +69,15 @@ do{
     printf STDERR ("%03d: Trying %s ...\n", $iter, $password) if $opt_v;
 }until(checkclasses($password, @classes));
 print "$password\n";
+
+sub classes2chars{
+    my(@classes) = @_;
+    my @chars;
+    foreach my $class (@classes){
+        push(@chars, @$class);
+    }
+    return @chars;
+}
 
 sub uniq{
     my @orig = @_;
