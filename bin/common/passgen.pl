@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 use strict;
 use Getopt::Std;
-use vars qw($opt_c $opt_l $opt_t $opt_v);
+use vars qw($opt_c $opt_l $opt_t $opt_v $opt_u);
 
 my $DEFAULT_LENGTH = 12;
 my $MINIMUM_LENGTH = 4;
@@ -12,12 +12,14 @@ my @CLASS_DIGIT = ("0" .. "9");
 my @CLASS_SYMBOL = qw(! # % & + , . / : ; < = > ? @ ^ ~);
 my @CLASS_SYMBOL_MIN = qw(- _);
 
+sub rmarrayelem;
+sub tweakclasses;
 sub classes2chars;
 sub uniq;
 sub checkclasses;
 
-if(! getopts("l:t:c:v")){
-    print STDERR "usage: $0 [-v] [-l length] [-t type] [-c optchars]\n";
+if(! getopts("l:t:c:vu")){
+    print STDERR "usage: $0 [-v] [-u] [-l length] [-t type] [-c optchars]\n";
     print STDERR "       type can be alnum, word or full(default).\n";
     exit(0);
 }
@@ -35,6 +37,9 @@ if($opt_t =~ /^alnum/i){
     @classes = (\@CLASS_UPPER, \@CLASS_LOWER, \@CLASS_DIGIT, \@CLASS_SYMBOL_MIN);
 }else{
     @classes = (\@CLASS_UPPER, \@CLASS_LOWER, \@CLASS_DIGIT, \@CLASS_SYMBOL);
+}
+if($opt_u){
+    tweakclasses("O01l", @classes);
 }
 my @chars = classes2chars(@classes);
 
@@ -89,6 +94,30 @@ sub uniq{
         push(@new, $c);
     }
     return @new;
+}
+
+sub rmarrayelem{
+    my($elem, $arrayref) = @_;
+    if(ref($arrayref) eq "ARRAY"){
+        for(my $i = 0; $i < @$arrayref; $i++){
+            if($arrayref->[$i] eq $elem){
+                splice(@$arrayref, $i, 1);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+sub tweakclasses{
+    my($chars, @classes) = @_;
+    my $count;
+    foreach my $class (@classes){
+        foreach my $char (split(//, $chars)){
+            $count = $count + rmarrayelem($char, $class);
+        }
+    }
+    return $count;
 }
 
 sub checkclasses{
