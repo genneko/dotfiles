@@ -24,6 +24,13 @@ if which tmux > /dev/null 2>&1; then
 	fi
 fi
 
+if ! which ascii > /dev/null 2>&1; then
+	# https://unix.stackexchange.com/questions/15139/how-to-print-all-printable-ascii-chars-in-cli
+	function ascii(){
+		 awk 'BEGIN {for (i = 32; i < 127; i++) printf "%3d 0x%02x %c\n", i, i, i}' | pr -t -6 -w78
+	}
+fi
+
 if [ -f "$HOME/$DOTLOCAL/bash_profile" ]; then
 	. "$HOME/$DOTLOCAL/bash_profile"
 fi
