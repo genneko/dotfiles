@@ -57,9 +57,9 @@ add_account() {
 }
 
 show_status() {
-	local cfg=$(git config --list --local 2>/dev/null | grep -E '^user\.(name|email)')
+	local cfg="$(git config --list --local 2>/dev/null | grep -E '^user\.(name|email)')"
 	if [ -z "$cfg" ]; then
-		cfg=$(git config --list --global 2>/dev/null | grep -E '^user\.(name|email)')
+		cfg="$(git config --list --global 2>/dev/null | grep -E '^user\.(name|email)')"
 		if [ -z "$cfg" ]; then
 			echo "NO config at all."
 		else
@@ -135,7 +135,7 @@ case "$type" in
 		show_status
 		;;
 	status)
-		shift
+		[ $# -gt 0 ] && shift
 		if [ $# -ge 1 ]; then
 			show_status_multi "$@"
 		else
