@@ -6,7 +6,14 @@
 config="$HOME/.privacychkrc"
 if [ -f "$config" ]; then
 	pattern=$(cat $config)
-	grep -iER "$pattern" . | grep -v ^\./\.git/
+	exclude='^\./\.git/'
+	for s in $@; do
+		if [ -n "$s" ]; then
+			exclude="$exclude|$s"
+		fi
+	done
+	#echo "exclude: $exclude"
+	grep -iER "$pattern" . | grep -iEv "$exclude"
 	git log --pretty=full | grep -iE "$pattern"
 else
 	echo "WARNING: configuration file '$config' does not exist."
