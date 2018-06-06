@@ -17,6 +17,8 @@ export PAGER=less
 export BLOCKSIZE=K
 export PATH="$PATH:$HOME/bin"
 
+umask 022
+
 PS1='[\u@\h:\w]\$ '
 set -o noclobber
 set -o ignoreeof
