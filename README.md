@@ -1,5 +1,5 @@
 # dotfiles
-Generalized dotfiles for various environments.
+Personal generalized dotfiles for various environments.
 Currently cygwin and freebsd are supported.
 
 ## Install
