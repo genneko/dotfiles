@@ -8,13 +8,14 @@
 prog=$(basename $0)
 
 version_exit() {
-	echo "$prog version 0.20"
+	echo "$prog version 0.30"
 	exit 0
 }
 
 usage_exit() {
-	echo "usage: $prog [-tis] [-VTH] [-o options] host..."
+	echo "usage: $prog [-gtis] [-VTH] [-o options] host..."
 	echo "       $prog [-hv]"
+	echo "       -g: use vagrant instead of ssh."
 	echo "       -t: use telnet instead of ssh."
 	echo "       -i: use ipmitool instead of ssh."
 	echo "       -s: use ssh (default)."
@@ -25,6 +26,10 @@ usage_exit() {
 	echo "       -h: show this help and exit."
 	echo "       -v: show version and exit."
 	exit 1
+}
+
+vagrant() {
+	echo "vagrant ssh $1 $2"
 }
 
 telnet() {
@@ -50,9 +55,13 @@ exit_if_na() {
 
 rsh="ssh"
 layout="vertical"
-while getopts "tisVTHo:hv" opt
+while getopts "gtisVTHo:hv" opt
 do
 	case "${opt}" in
+		g)
+			rsh="vagrant"
+			exit_if_na $rsh
+			;;
 		t)
 			rsh="telnet"
 			exit_if_na $rsh
