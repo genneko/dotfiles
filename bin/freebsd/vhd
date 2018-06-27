@@ -7,12 +7,12 @@ HOSTNAME=`/bin/hostname -s`
 
 if [ x$1 = "xsimple" ]; then
 	/usr/bin/fgrep "refused connect" ${LOGFILE} | \
-		/usr/bin/sed "s/refused connect from //; s/${HOSTNAME} //; s/\[.*://" | \
+		/usr/bin/sed "s/refused connect from //; s/${HOSTNAME} //; s/\[.*?://" | \
 		/usr/bin/awk '{print $6}' | \
 		/usr/bin/sed 's/(//; s/)//'
 else
 	/usr/bin/fgrep "refused connect" ${LOGFILE} | \
-		/usr/bin/sed "s/refused connect from //; s/${HOSTNAME} //; s/\[.*://"
+		/usr/bin/sed "s/refused connect from //; s/${HOSTNAME} //; s/\[.*?://"
 fi
 exit 0
 
