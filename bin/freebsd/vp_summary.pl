@@ -30,7 +30,7 @@ sub gethostname{
 }
 
 getopts('d');
-$srcflag = '%-23.23s';
+$srcflag = '%-23s';
 
 
 $type = $ARGV[0] ? $ARGV[0] : "block";
@@ -47,7 +47,7 @@ if($type =~ /^(all|any)$/i){
 
 while(<STDIN>){
     chomp;
-    if(/($pattern)[^:]+(in|out) on ([^:]+): (\d+\.\d+\.\d+\.\d+)\.?(\d+)? > (\d+\.\d+\.\d+\.\d+)\.?(\d+)?: (.*)/){
+    if(/($pattern)[^:]+(in|out) on ([^:]+): (\d+\.\d+\.\d+\.\d+|[0-9a-f:]+)\.?(\d+)? > (\d+\.\d+\.\d+\.\d+|[0-9a-f:]+)\.?(\d+)?: (.*)/){
         my($action, $dir, $if, $srcip, $srcport, $dstip, $dstport, $extra) = ($1,$2,$3,$4,$5,$6,$7,$8);
         my($service, $srchost, $proto);
         $action = substr($action, 0, 1);
