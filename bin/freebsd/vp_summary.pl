@@ -6,6 +6,7 @@
 use strict;
 use vars qw($opt_d);
 use Getopt::Std;
+use Socket qw(getaddrinfo getnameinfo);
 
 my $type;
 my $pattern;
@@ -23,7 +24,10 @@ sub gethostname{
     if(exists $hostdb{$ipaddr}){
         return $hostdb{$ipaddr};
     }else{
-        my $name = gethostbyaddr(pack("C4", split(/\./, $ipaddr)), 2);
+        my($e1, @r) = getaddrinfo($ipaddr);
+        return $ipaddr if $e1 or scalar(@r) < 1;
+        my($e2, $name) = getnameinfo($r[0]{addr});
+        return $ipaddr if $e2;
         $hostdb{$ipaddr} = $name;
         return $name;
     }
