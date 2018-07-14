@@ -64,6 +64,7 @@ sub get_defaults{
         }
     }
     close(MAKEFILE);
+    push(@default, qw(DOCS NLS EXAMPLES IPV6));
     return @default;
 }
 
