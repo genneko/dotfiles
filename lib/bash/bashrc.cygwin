@@ -5,6 +5,8 @@ dot_cygprompt(){
 export CYGWIN="ntsec emacs nodosfilewarning"
 export VAGRANT_PREFER_SYSTEM_BIN=1
 export SHELL=/usr/bin/bash
+# for tmux to start in a current working directory
+alias tmux='env CHERE_INVOKING=1 tmux'
 shopt -s completion_strip_exe
 PS1='[\u@\h:\w]'$(dot_cygprompt)' '
 alias cs=cygstart
