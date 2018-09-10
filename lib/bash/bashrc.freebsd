@@ -5,6 +5,23 @@ alias pup='sudo portsnap fetch update; pkg version -vL='
 alias bp='sudo portmaster -D'
 alias pfls='sudo vp | vp_summary.pl'
 
+md_create_encrypted() {
+	local size=$1
+	local mountpoint=$2
+	if [ -z "$size" -o -z "$mountpoint" ]; then
+		echo "usage: md_create_encrypted <size> <mountpoint>" >&2
+		echo "       This will create and mount an encrypted MD of <size> on <mountpoint>."
+		return 1
+	fi
+	local mdname=$(sudo mdconfig -s $size)
+	if [ -n "$mdname" ]; then
+		sudo geli onetime -s 4096 /dev/$mdname && \
+			sudo newfs /dev/$mdname.eli && \
+			sudo geli detach -l /dev/$mdname && \
+			sudo mount /dev/$mdname.eli $mountpoint
+	fi
+}
+
 if kldstat -m zfs > /dev/null 2>&1; then
 	be_dataset() {
 		zfs list -t filesystem -o name,mounted,canmount -r zroot/ROOT | awk '$2=="yes" && $3=="noauto" { print $1 }'
