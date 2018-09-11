@@ -17,3 +17,16 @@ augroup auto_comment_off
 	autocmd BufEnter * setlocal formatoptions-=r
 	autocmd BufEnter * setlocal formatoptions-=o
 augroup END
+augroup freebsd_source_specific
+	autocmd!
+	autocmd BufNew,BufReadPre /usr/src/*
+		\ if filereadable("/usr/src/tools/tools/editing/freebsd.vim")
+		\ | filetype plugin indent off
+		\ | source /usr/src/tools/tools/editing/freebsd.vim
+		\ | set autoindent
+		\ | set smartindent
+		\ | endif
+augroup END
+if filereadable($HOME . "/local/dotfiles/vimrc")
+	source $HOME/local/dotfiles/vimrc
+endif
