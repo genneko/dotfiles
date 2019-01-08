@@ -32,6 +32,7 @@ foreach my $m (@modules){
         $pkgname = $m;
         $pkgname =~ s/::perl$//;
         $pkgname =~ s/Image::Magick/ImageMagick/;
+        $pkgname =~ s/libintl-perl/libintl/;
         $pkgname =~ s/::/-/g;
         if($o_loose_match){
             @matched = grep { $_ =~ /\b${pkgname}/i } keys %packagemap;
