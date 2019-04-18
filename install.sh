@@ -19,7 +19,7 @@ _mkcopy(){
 }
 
 _mklink(){
-	ln -vsf "$1" "$2"
+	ln -sf "$1" "$2" && echo "'$2' -> '$1'"
 }
 
 dot_install(){
