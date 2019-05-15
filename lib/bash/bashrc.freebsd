@@ -65,12 +65,17 @@ if kldstat -m zfs > /dev/null 2>&1; then
 		local types="filesystem"
 		local morecolumns=""
 		local fullcolumns=""
-		while getopts "dlmcpt:o:O:h" opt
+		while getopts "dslmcpt:o:O:h" opt
 		do
 			case "$opt" in
 				d)
 					# d - default (zfs list's)
 					morecolumns="$morecolumns${morecolumns:+,}used,available,referenced,mountpoint"
+					col2=""
+					;;
+				s)
+					# s - size
+					morecolumns="$morecolumns${morecolumns:+,}used,available,referenced,usedbysnapshots"
 					col2=""
 					;;
 				l)
@@ -115,6 +120,7 @@ if kldstat -m zfs > /dev/null 2>&1; then
 					echo "       zfs_list_filesystem -h"
 					echo
 					echo "       -d: default of 'zfs list'"
+					echo "       -s: size (show name,used,referenced,usedbysnapshots)"
 					echo "       -l: long (show default + used,referenced)"
 					echo "       -m: mount (show name,mountpoint,canmount,mounted)"
 					echo "       -c: clone (show name,origin)"
