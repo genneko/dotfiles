@@ -1,6 +1,6 @@
-set tabstop=2
-set expandtab
-set shiftwidth=2
-set softtabstop=2
-set noautoindent
-set nosmartindent
+setlocal tabstop=2
+setlocal expandtab
+setlocal shiftwidth=2
+setlocal softtabstop=2
+setlocal noautoindent
+setlocal nosmartindent

@@ -27,6 +27,18 @@ augroup freebsd_source_specific
 		\ | set smartindent
 		\ | endif
 augroup END
+" https://qiita.com/unosk/items/43989b61eff48e0665f3
+" https://vim-jp.org/vimdoc-en/eval.html
+augroup vimrc_local_override
+	autocmd!
+	autocmd BufNewFile,BufRead * call s:vimrc_local(expand('<afile>:p:h'))
+augroup END
+function! s:vimrc_local(loc)
+	let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
+	for i in reverse(filter(files, 'filereadable(v:val)'))
+		source `=i`
+	endfor
+endfunction
 if filereadable($HOME . "/local/dotfiles/vimrc")
 	source $HOME/local/dotfiles/vimrc
 endif
