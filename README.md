@@ -36,3 +36,10 @@ Name the file by removing a leading dot. For example, "bashrc" for ".bashrc".
 ```
 $ vim ~/local/dotfiles/bashrc
 ```
+Currently, the following files can be overriden in this way.
+
+- .bashrc
+- .bash_profile
+- .bash_logout
+- .gitconfig
+- .vimrc
