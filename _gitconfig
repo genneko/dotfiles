@@ -1,0 +1,10 @@
+[core]
+	excludesfile = ~/.gitignore.global
+[push]
+	default = simple
+[user]
+	useConfigOnly = true
+[log]
+	decorate = true
+[include]
+	path = ~/local/dotfiles/gitconfig
