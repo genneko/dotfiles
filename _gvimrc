@@ -2,6 +2,7 @@ set lines=50
 set columns=80
 set guifont=Monospace\ 11
 set linespace=3
+set ambiwidth=double
 "if filereadable(expand('$HOME/.vimrc'))
 "	source $HOME/.vimrc
 "endif
