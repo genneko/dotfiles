@@ -3,6 +3,7 @@ set termencoding=utf-8
 set fileencodings=utf-8,euc-jp,cp932,iso-2022-jp
 set fileformats=unix,dos,mac
 set t_Co=256
+set ambiwidth=double
 colorscheme railscasts
 filetype plugin indent on
 syntax enable
