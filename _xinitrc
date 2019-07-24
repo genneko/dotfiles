@@ -8,19 +8,19 @@ export LANGUAGE=ja_JP.UTF-8
 export LANG=ja_JP.UTF-8
 
 ## Input Method - uim-mozc
-export GTK_IM_MODULE=uim
-export QT_IM_MODULE=uim
-export XMODIFIERS='@im=uim'
-export XIM=uim
+#export GTK_IM_MODULE=uim
+#export QT_IM_MODULE=uim
+#export XMODIFIERS='@im=uim'
+#export XIM=uim
 ## Input Method - fcitx-mozc
-# export GTK_IM_MODULE=fcitx
-# export QT_IM_MODULE=fcitx
-# export XMODIFIERS='@im=fcitx'
+ export GTK_IM_MODULE=fcitx
+ export QT_IM_MODULE=fcitx
+ export XMODIFIERS='@im=fcitx'
 
 ## Start Input Method
 /usr/local/bin/mozc start
-uim-xim &
-# fcitx -r -d
+#uim-xim &
+ fcitx -r -d
 
 ## Start Xfce4
 exec startxfce4
