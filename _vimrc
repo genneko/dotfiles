@@ -13,6 +13,8 @@ set shiftwidth=8
 set softtabstop=8
 set noautoindent
 set nosmartindent
+" Prevent xfce4-terminal title gets longer and longer
+set notitle
 augroup auto_comment_off
 	autocmd!
 	autocmd BufEnter * setlocal formatoptions-=r
