@@ -22,5 +22,8 @@ export LANG=ja_JP.UTF-8
 #uim-xim &
  fcitx -r -d
 
+## Disable Beep
+xset -b
+
 ## Start Xfce4
 exec startxfce4
