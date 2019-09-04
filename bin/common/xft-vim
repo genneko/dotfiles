@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# xft-vim - a wrapper to run vim in newly started xfce4-terminal.
+#           (intended as a Joplin's external editor command)
+#
+/usr/local/bin/xfce4-terminal -e "env LANGUAGE=en_US.UTF-8 LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 /usr/local/bin/vim $@"
