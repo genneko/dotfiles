@@ -79,3 +79,12 @@ dot_getproxy(){
 dot_getproxy_export(){
 	printenv | grep _proxy | xargs -I "CONTENT" echo "export CONTENT"
 }
+
+dot_uniq_path(){
+	local origpath=$1
+	echo $origpath | \
+		tr ':' '\n' | \
+		awk '{ if(! seen[$0]++){ print }; }' | \
+		paste -s -d ':' -
+}
+
