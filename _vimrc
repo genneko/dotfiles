@@ -45,6 +45,13 @@ augroup freebsd_source_specific
 		\ | endif
 augroup END
 
+" Lilypond
+set runtimepath+=/usr/local/share/lilypond/current/vim
+augroup lilypond_specific
+	autocmd!
+	autocmd BufNew,BufReadPre *.ly setlocal filetype=lilypond
+augroup END
+
 "
 " :SyntaxInfo utility function by cohama
 " http://cohama.hateblo.jp/entry/2013/08/11/020849
