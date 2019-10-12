@@ -31,6 +31,10 @@ PS1='[\u@\h:\w]\$ '
 set -o noclobber
 set -o ignoreeof
 
+# On FreeBSD, "pkg install bash-completion" is required.
+[[ $PS1 && -f /usr/local/share/bash-completion/bash_completion.sh ]] && \
+		source /usr/local/share/bash-completion/bash_completion.sh
+
 DOTFILES=$(basename $(dirname $(readlink -f $HOME/.bashrc)))
 DOTLOCAL="local/${DOTFILES}"
 export DOTFILES DOTLOCAL

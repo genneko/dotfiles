@@ -12,7 +12,7 @@ if which aws_completer > /dev/null 2>&1; then
 fi
 
 if which doctl > /dev/null 2>&1; then
-	source <($HOME/bin/doctl completion bash)
+	source <(doctl completion bash)
 fi
 
 if which tmux > /dev/null 2>&1; then
