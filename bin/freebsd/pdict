@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# PDICT (periodic dictionary)
+#     tells you about FreeBSD's periodic.conf variables.
+#
+prog=$(basename $0)
+bindir=$(dirname $(readlink -f $0))
+
+echoerr() {
+	echo "$@" >&2
+}
+
+usage_exit() {
+	echoerr "PDICT (periodic dictionary): "
+	echoerr "    tells you about FreeBSD's periodic.conf variables."
+	echoerr ""
+	echoerr "usage: $prog <varname> ..."
+	echoerr "       <varname> can be partial."
+	echoerr ""
+	echoerr "examples:"
+	echoerr "       $ pdict daily_clean_tmps_enable"
+	echoerr "       $ pdict mailq"
+	exit 1
+}
+
+describe_periodic_var() {
+	local name=$1
+	if echo "$name" | grep -E "^(daily|weekly|monthly|security)_"; then
+		name=$(echo "$name" | sed -E "s/(daily|weekly|monthly|security)_/(<dir>|\1)_/")
+	else
+		name="(<dir>_)?[0-9A-z_]*${name}"
+	fi
+	LC_ALL=C man periodic.conf | col -b | sed -E -n "/^	 ${name}[0-9A-z_]*$/,/^[	]*$/p"
+}
+
+if [ $# -lt 1 ]; then
+	usage_exit
+fi
+
+while [ $# -gt 0 ]; do
+	test -n "$1" && describe_periodic_var "$1"
+	shift
+done
+
