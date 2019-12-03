@@ -25,7 +25,7 @@ usage_exit() {
 
 describe_periodic_var() {
 	local name=$1
-	if echo "$name" | grep -E "^(daily|weekly|monthly|security)_"; then
+	if echo "$name" | grep -E -q "^(daily|weekly|monthly|security)_"; then
 		name=$(echo "$name" | sed -E "s/(daily|weekly|monthly|security)_/(<dir>|\1)_/")
 	else
 		name="(<dir>_)?[0-9A-z_]*${name}"
