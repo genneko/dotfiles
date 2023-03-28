@@ -12,7 +12,7 @@ shift $(( $OPTIND - 1 ))
 
 if [ $updateupdating -eq 1 ]; then
 	echo -n "Updating UPDATING file ..."
-	fetch -q -o "$updatingfile" 'https://svnweb.freebsd.org/ports/head/UPDATING?view=co'
+	fetch -q -o "$updatingfile" 'https://cgit.freebsd.org/ports/plain/UPDATING'
 	echo " done"
 fi
 
