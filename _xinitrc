@@ -13,14 +13,17 @@ export LANG=ja_JP.UTF-8
 #export XMODIFIERS='@im=uim'
 #export XIM=uim
 ## Input Method - fcitx-mozc
- export GTK_IM_MODULE=fcitx
- export QT_IM_MODULE=fcitx
- export XMODIFIERS='@im=fcitx'
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS='@im=fcitx'
 
 ## Start Input Method
 /usr/local/bin/mozc start
 #uim-xim &
- fcitx -r -d
+#
+# 2022-05-28 Commented out the following line to Use ~/.config/autostart
+#
+#fcitx -r -d
 
 ## Disable Beep
 xset -b
