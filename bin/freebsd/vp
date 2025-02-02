@@ -20,8 +20,8 @@ done
 shift $(( $OPTIND - 1 ))
 
 if [ "$called" = "vp" ]; then
-	tcpdump -netttr /var/log/pflog $*
+	sudo tcpdump -netttr /var/log/pflog $*
 elif [ "$called" = "vpi" ]; then
-	tcpdump -netttlpi pflog0 $*
+	sudo tcpdump -netttlpi pflog0 $*
 fi
 exit 0
