@@ -4,7 +4,7 @@
 #
 
 use strict;
-use vars qw($opt_d);
+use vars qw($opt_d $opt_p $opt_P);
 use Getopt::Std;
 use Socket qw(getaddrinfo getnameinfo);
 
@@ -15,7 +15,7 @@ my %db;
 my %hostdb;
 
 sub usage_exit{
-    print "usage: vpls [-dw] [pass|allow  | block|deny | all|any]\n";
+    print "usage: vp_summary.pl [-d] [-p dstport] [-P srcport] [pass|allow  | block|deny | all|any]\n";
     exit 1;
 }
 
@@ -33,7 +33,7 @@ sub gethostname{
     }
 }
 
-getopts('d');
+getopts('dp:P:');
 $srcflag = '%-23s';
 
 
@@ -76,6 +76,13 @@ while(<STDIN>){
             $service = getservbyport($dstport,$proto);
         }
         $proto =~ tr/a-z/A-Z/;
+
+        if($opt_p){
+            next unless $opt_p == $dstport;
+        }
+        if($opt_P){
+            next unless $opt_P == $srcport;
+        }
 
         if($opt_d){
             $srchost = gethostname($srcip);
